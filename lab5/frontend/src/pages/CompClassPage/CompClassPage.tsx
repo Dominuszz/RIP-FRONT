@@ -1,0 +1,110 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { BreadCrumbs } from '../../components/BreadCrumbs/BreadCrumbs';
+import { ROUTES, ROUTE_LABELS } from '../../Routes';
+import { getComplexClass } from '../../modules/compclassapi.ts';
+import type { ComplexClass } from '../../modules/compclassapi.ts';
+import { Spinner } from 'react-bootstrap';
+import Header from '../../components/Header/Header';
+import { COMPLEXCLASS_MOCK } from '../../modules/mock';
+import './CompClassPage.css';
+
+export default function ComplexClassPage() {
+    const [compclass, setComplexClass] = useState<ComplexClass | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [imageError, setImageError] = useState(false);
+    const { id } = useParams();
+
+    useEffect(() => {
+        if (!id) return;
+
+        const fetchComplexClass = async () => {
+            try {
+                setLoading(true);
+                const compclassData = await getComplexClass(Number(id));
+
+                if (!compclassData) {
+                    const mockComplexClass = COMPLEXCLASS_MOCK.find(c => c.compclass_id === Number(id)) || null;
+                    setComplexClass(mockComplexClass);
+                } else {
+                    setComplexClass(compclassData);
+                }
+            } catch (error) {
+                console.error('Error fetching complex class, using mocks:', error);
+                const mockComplexClass = COMPLEXCLASS_MOCK.find(c => c.compclass_id === Number(id)) || null;
+                setComplexClass(mockComplexClass);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchComplexClass();
+    }, [id]);
+
+
+    const getImageUrl = (photo: string) => {
+        if (!photo || imageError) return '/src/assets/compclasserror.jpg';
+        if (photo.startsWith("data:") || photo.startsWith("/") || photo.includes("assets/")) {
+            return photo;
+        }
+
+        return `http://localhost:9000/lab1/${photo}`;
+    };
+
+
+    const handleImageError = () => {
+        setImageError(true);
+    };
+
+    if (loading) {
+        return (
+            <div className="compclass-page">
+                <Header />
+                <div className="compclass-page-loader">
+                    <Spinner animation="border" />
+                </div>
+            </div>
+        );
+    }
+
+    if (!compclass) {
+        return (
+            <div className="compclass-page">
+                <Header />
+                <div className="compclass-page-not-found">
+                    <h1>Класс сложности не найден</h1>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="detail-body">
+            <Header />
+
+            <BreadCrumbs
+                crumbs={[
+                    { label: ROUTE_LABELS.ComplexClasses, path: ROUTES.ComplexClasses },
+                    { label: "O(" + compclass.complexity + ")"},
+                ]}
+            />
+
+            <div className="detail">
+                <img
+                    src={getImageUrl(compclass.img)}
+                    alt="img"
+                    onError={handleImageError}
+                    className="detail-image"
+                />
+                <div className="text-panel">
+                    <h2 className="complexity-title">Класс Сложности O({compclass.complexity})</h2>
+                    <div className="description-container">
+                        <p className="degree">Степень: {compclass.degree_text}</p>
+                        <p className="description">{compclass.description}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    );
+}

@@ -1,0 +1,116 @@
+.compclass-page-not-found{
+    color: #9ca3af;
+    
+}
+
+
+.header-logo {
+    height: 64px;
+    width: 64px;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 30%;
+    min-width: 12rem;
+    margin: 1rem;
+}
+
+.search-btn {
+    background: #148761;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    width: 10%;
+    cursor: pointer;
+}
+
+header {
+    background-color: #222222;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #FFFFFF;
+}
+
+.search-input {
+    font-size: 20px;
+    padding: 8px;
+    border: none;
+    border-radius: 12px;
+    width: 80%;
+}
+
+.detail {
+    margin: 50px auto 0 auto;
+    width: 70%;
+    max-width: 1000px;
+    height: 30%;
+    background-color: #222222;
+    padding: 40px 20px;
+    border: 1px solid #333333;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.detail-image {
+    width: 60%;
+    height: 350px;
+    object-fit: initial;
+}
+
+.text-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.complexity-title {
+    padding: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #FFFFFF;
+    margin: 0 0 10px 0;
+    padding: 0;
+}
+
+.description-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.degree {
+    padding: 20px 0 20px 0;
+    font-size: 20px;
+    color: #FFFFFF;
+    margin: 0 0 8px 0;
+    font-weight: bold;
+}
+
+.description {
+    padding: 20px;
+    font-size: 20px;
+    color: #CCCCCC;
+    margin: 0;
+    line-height: 1.4;
+    padding: 0;
+}
+.detail-body{
+    background-color: #11181C;
+}
+html, body, #root {
+    height: 100%;
+    background-color: #11181C;
+    margin: 0;
+    padding: 0;
+}

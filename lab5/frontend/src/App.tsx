@@ -1,0 +1,20 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import CompClassesPage from "./pages/CompClassesPage/CompClassesPage";
+import { ROUTES } from "./Routes";
+import { HomePage } from "./pages/HomePage/HomePage";
+import CompClassPage from './pages/CompClassPage/CompClassPage';
+import 'bootstrap/dist/css/bootstrap.min.css'
+
+function App() {
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path={ROUTES.HOME} element={<HomePage />} />
+                <Route path={ROUTES.ComplexClasses} element={<CompClassesPage />} />
+                <Route path={ROUTES.ComplexClass} element={<CompClassPage />} />
+            </Routes>
+        </BrowserRouter>
+    );
+}
+
+export default App;
