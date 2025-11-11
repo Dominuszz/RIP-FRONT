@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import Header from '../../components/Header/Header';
 import Search from '../../components/InputField/InputField';
-import { BreadCrumbs } from '../../components/BreadCrumbs/BreadCrumbs';
-import { ROUTE_LABELS } from '../../Routes';
+
 import { listComplexClasses } from '../../modules/compclassapi.ts';
 import { COMPLEXCLASS_MOCK } from '../../modules/mock';
 import type { ComplexClass } from '../../modules/compclassapi.ts';
@@ -69,12 +68,6 @@ export default function ComplexClassesPage() {
     return (
         <div className="compclasses-page">
             <Header />
-
-            <BreadCrumbs
-                crumbs={[
-                    { label: ROUTE_LABELS.ComplexClasses },
-                ]}
-            />
 
             <main>
                 <div className="complexclass-wrapper">

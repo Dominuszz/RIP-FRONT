@@ -11,6 +11,7 @@ header {
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .nav-left {
@@ -26,7 +27,7 @@ header {
 }
 
 .nav-title {
-    color: #148761;
+    color: #148761 !important;
     font-size: 28px;
     font-weight: bold;
     text-decoration: none;
@@ -34,16 +35,36 @@ header {
 }
 
 .nav-title:hover {
-    color: #1fc287; /* немного светлее для hover */
+    color: #1fc287 !important;
 }
 
 .nav-link {
-    color: #148761;
-    font-size: 20px;
+    color: #148761 !important;
+    font-size: 28px;
+    font-weight: bold;
     text-decoration: none;
     transition: color 0.2s ease;
+    padding: 8px 16px;
+    border-radius: 4px;
+    display: block;
 }
 
 .nav-link:hover {
-    color: #1fc287; /* эффект подсветки при наведении */
+    color: #1fc287 !important;
+    background-color: rgba(20, 135, 97, 0.1);
+}
+
+/* Десктопное меню */
+.nav-links {
+
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links .nav-link {
+    color: #148761 !important;
+}
+
+.nav-links .nav-link:hover {
+    color: #1fc287 !important;
 }
