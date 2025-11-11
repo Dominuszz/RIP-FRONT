@@ -1,0 +1,82 @@
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card-image {
+    width: 100%;
+    height: 60%;
+    object-fit: initial;
+}
+
+.card-detail {
+    background-color: #222222;
+    border-radius: 5%;
+    width: 24%;
+    height: 360px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.card-text-detail {
+    color: #fff;
+    margin: 8px 0;
+    font-size: 20px;
+    text-align: center;
+}
+
+.card-button {
+    background-color: #148761;
+    color: #FFFFFF;
+    border: none;
+    padding: 4px 6px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration: none;
+    width: 80px;
+    font-size: 16px;
+}
+@media (max-width: 600px) {
+    .card-container {
+        flex-direction: column; /* карточки по вертикали */
+        gap: 12px; /* уменьшаем расстояние между карточками */
+        padding: 12px;
+    }
+
+    .card-detail {
+        width: 100%; /* карточка растягивается на всю ширину */
+        height: auto; /* высота под содержимое */
+        border-radius: 8px;
+    }
+
+    .card-image {
+        height: auto; /* сохраняем пропорции изображения */
+    }
+
+    .card-text-detail {
+        font-size: 16px; /* уменьшаем размер текста */
+    }
+
+    .card-button {
+        width: 100%; /* кнопка растягивается на всю ширину карточки */
+        font-size: 16px;
+        padding: 8px 0;
+    }
+
+    .card-content {
+        padding: 8px; /* уменьшаем внутренние отступы */
+    }
+}

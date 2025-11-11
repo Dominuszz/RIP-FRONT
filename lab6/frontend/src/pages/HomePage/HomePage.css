@@ -1,0 +1,106 @@
+.home-banner {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 400px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.banner-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    max-width: 600px;
+    padding: 20px;
+}
+
+.home-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.banner-content h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.banner-content p {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    line-height: 1.5;
+}
+
+/* Стили кнопки */
+.home-banner .btn-primary {
+    background-color: #148761 !important;
+    border-color: #148761 !important;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.home-banner .btn-primary:hover {
+    background-color: #0f6a4d !important;
+    border-color: #0f6a4d !important;
+}
+
+.home-banner .btn-primary:active {
+    background-color: #094d37 !important;
+    border-color: #094d37 !important;
+}
+
+/* Мобильная адаптация */
+@media (min-width: 768px) {
+    .home-banner {
+        min-height: 500px;
+    }
+
+    .banner-content h1 {
+        font-size: 3rem;
+    }
+
+    .banner-content p {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-banner {
+        min-height: 350px;
+        padding: 15px;
+    }
+
+    .banner-content {
+        padding: 15px;
+    }
+
+    .banner-content h1 {
+        font-size: 1.8rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .banner-content p {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .home-banner .btn-primary {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
