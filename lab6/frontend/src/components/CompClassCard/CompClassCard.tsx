@@ -3,7 +3,7 @@ import type { ComplexClass } from "../../modules/compclassapi.ts";
 import './CompClassCard.css';
 import { useState, useEffect } from 'react';
 import defaultComplexClassImage from '../../assets/compclasserror.jpg';
-import {dest_img} from "../../modules/target_config.ts";
+import { getDestImg} from "../../modules/target_config.ts";
 
 export default function CompClassCard({ complexclass }: { complexclass: ComplexClass; }) {
     const [imageError, setImageError] = useState(false);
@@ -14,7 +14,7 @@ export default function CompClassCard({ complexclass }: { complexclass: ComplexC
         if (photo.startsWith("data:") || photo.startsWith("/") || photo.includes("assets/")) {
             return photo;
         }
-        return `${dest_img}/${photo}`;
+        return `${getDestImg()}/${photo}`;
     };
 
     const [imageUrl, setImageUrl] = useState(getImageUrl(complexclass.img));

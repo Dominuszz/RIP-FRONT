@@ -7,7 +7,7 @@ import Header from '../../components/Header/Header'
 import './CompClassPage.css'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { fetchComplexClassById } from '../../store/slices/complexClassesSlice'
-import {dest_img} from "../../modules/target_config.ts";
+import {getDestImg} from "../../modules/target_config.ts";
 
 export default function ComplexClassPage() {
     const dispatch = useAppDispatch()
@@ -25,7 +25,7 @@ export default function ComplexClassPage() {
         if (photo.startsWith("data:") || photo.startsWith("/") || photo.includes("assets/")) {
             return photo
         }
-        return `${dest_img}/${photo}`
+        return `${getDestImg()}/${photo}`
     }
 
     const handleImageError = () => {

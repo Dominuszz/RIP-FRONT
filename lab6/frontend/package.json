@@ -4,9 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "tauri": "tauri",
+    "tauri": "npx tauri",
     "dev": "vite",
+    "dev:tauri": "npx tauri dev",
     "build": "tsc && vite build",
+    "build:tauri": "npx tauri build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "deploy": "gh-pages -d dist -r https://github.com/Dominuszz/RIP-FRONT.git"

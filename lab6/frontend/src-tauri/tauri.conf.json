@@ -2,12 +2,12 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "RIP-FRONT",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.RIP-FRONT.app",
   "build": {
-    "frontendDist": "../build",
-    "devUrl": "https://192.168.1.17:3000/RIP-FRONT/",
+    "frontendDist": "../dist",
+    "devUrl": "https://172.29.128.1:3000",
     "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build"
+    "beforeBuildCommand": "tsc && vite build --mode tauri"
   },
   "app": {
     "windows": [
@@ -16,7 +16,10 @@
         "width": 800,
         "height": 600,
         "resizable": true,
-        "fullscreen": false
+        "fullscreen": false,
+
+        "devtools": true
+
       }
     ],
     "security": {
