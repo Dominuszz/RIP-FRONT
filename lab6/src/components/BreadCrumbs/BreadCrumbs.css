@@ -1,0 +1,43 @@
+:root {
+    --active_color: #9ca3af;
+    --additional_color: #9ca3af;
+}
+
+.breadcrumbs {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+}
+
+.breadcrumbs * {
+    color: var(--additional_color);
+    transition: 0.5s;
+}
+
+.breadcrumbs *:not(.slash):hover {
+    color: var(--active_color);
+}
+
+.breadcrumbs li {
+    position: relative;
+    cursor: pointer;
+}
+
+.breadcrumbs li:last-child {
+    color: var(--active_color);
+}
+
+@media (max-width: 600px) {
+    .breadcrumbs {
+        padding: 12px; /* уменьшаем отступы */
+        gap: 6px;      /* уменьшаем расстояние между элементами */
+        font-size: 14px; /* уменьшаем размер текста */
+    }
+
+    .breadcrumbs li {
+        white-space: nowrap; /* предотвращаем перенос слов внутри крошек */
+        overflow: hidden;    /* обрезаем длинные элементы при необходимости */
+        text-overflow: ellipsis; /* показываем многоточие для длинных крошек */
+    }
+}

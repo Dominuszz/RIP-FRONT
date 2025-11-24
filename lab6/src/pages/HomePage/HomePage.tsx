@@ -1,5 +1,5 @@
 import './HomePage.css';
-import { FC } from "react";
+import { type FC } from "react";
 import Header from '../../components/Header/Header';
 import { Carousel } from "react-bootstrap";
 import slide1 from "../../assets/slide1.jpg";

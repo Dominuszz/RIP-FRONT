@@ -5,10 +5,8 @@ import mkcert from 'vite-plugin-mkcert'
 import { api_proxy_addr, img_proxy_addr } from "./src/modules/target_config.ts";  // Только константы!
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-    const base = (mode === 'development' || mode === 'tauri') ? './' : '/RIP-FRONT/';
+export default defineConfig(( ) => {
     return {
-        base,
         plugins: [
             react(),
             mkcert(),
@@ -18,9 +16,8 @@ export default defineConfig(({ mode }) => {
                     enabled: true,
                 },
                 manifest: {
-                    name: "BigOCalc",  // ← Если нужно, измените на "RIP-FRONT"
+                    name: "BigOCalc",
                     short_name: "BigOCalc",
-                    start_url: base,  // Динамический base
                     display: "standalone",
                     background_color: "#7978F7",
                     theme_color: "#7978F7",
