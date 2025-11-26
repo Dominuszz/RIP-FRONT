@@ -1,0 +1,100 @@
+.auth-container {
+    min-height: 100vh;
+    padding: 20px 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+}
+
+.auth-card {
+    background-color: #2d2d2d;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-title {
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Форма */
+.form-label {
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    background-color: #444444;
+    border: 1px solid #555555;
+    color: #ffffff;
+}
+
+.form-control:focus {
+    background-color: #444444;
+    border-color: #148761;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(20, 135, 97, 0.25);
+}
+
+.form-control::placeholder {
+    color: #aaaaaa;
+}
+
+/* Кнопка */
+.auth-button {
+    background-color: #148761;
+    border-color: #148761;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.auth-button:hover,
+.auth-button:focus {
+    background-color: #117351;
+    border-color: #117351;
+}
+
+.auth-button:disabled {
+    background-color: #148761;
+    border-color: #148761;
+    opacity: 0.6;
+}
+
+/* Ссылка */
+.auth-link {
+    color: #e0e0e0;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.auth-link a {
+    color: #148761;
+    text-decoration: none;
+}
+
+.auth-link a:hover {
+    color: #117351;
+    text-decoration: underline;
+}
+
+/* Алерт */
+.alert {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.alert-danger {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+}
+
+/* Спиннер */
+.spinner-border {
+    color: #ffffff;
+}

@@ -1,0 +1,13 @@
+.bigo-request-button {
+    background-color: #11181C;
+    text-decoration: inherit;
+    margin: 1rem;
+    border: none;
+}
+
+.cart-number{
+    margin-left: 5px;
+    font-weight: bold;
+    color: #148761;
+    font-size: 20px;
+}

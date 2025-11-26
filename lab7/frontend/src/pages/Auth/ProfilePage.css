@@ -1,0 +1,95 @@
+.profile-container {
+
+    min-height: 100vh;
+    padding: 20px 0;
+}
+
+.profile-card {
+    background-color: #2d2d2d;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+}
+
+.profile-title {
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.profile-info h5,
+.password-change-section h5 {
+    color: #ffffff;
+}
+
+.profile-info p {
+    color: #e0e0e0;
+    margin-bottom: 0.5rem;
+}
+
+.profile-info strong {
+    color: #ffffff;
+}
+
+/* Форма смены пароля */
+.form-label {
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    background-color: #444444;
+    border: 1px solid #555555;
+    color: #ffffff;
+}
+
+.form-control:focus {
+    background-color: #444444;
+    border-color: #148761;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(20, 135, 97, 0.25);
+}
+
+.profile-button {
+    background-color: #148761;
+    border-color: #148761;
+}
+
+.profile-button:hover,
+.profile-button:focus {
+    background-color: #117351;
+    border-color: #117351;
+}
+
+/* Кнопка выхода */
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-outline-danger:hover,
+.btn-outline-danger:focus {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+/* Алерт */
+.alert-success {
+    background-color: rgba(20, 135, 97, 0.2);
+    color: #148761;
+}
+
+.alert-danger {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+}
+
+/* Спиннер */
+.spinner-border {
+    color: #148761;
+}
+
+/* Разделитель */
+.profile-actions {
+    border-top: 1px solid #444444 !important;
+}
