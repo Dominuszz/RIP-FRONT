@@ -168,14 +168,6 @@ export default function BigORequestsPage() {
                                         >
                                             Применить
                                         </Button>
-                                        <Button
-                                            variant="outline-secondary"
-                                            onClick={clearFilters}
-                                            disabled={loading}
-                                            style={{ color: '#148761', borderColor: '#148761' }}
-                                        >
-                                            Сбросить
-                                        </Button>
                                     </div>
                                 </div>
                             </Card.Body>

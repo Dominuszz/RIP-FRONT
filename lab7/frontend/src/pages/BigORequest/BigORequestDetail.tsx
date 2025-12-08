@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Container, Button, Spinner, Alert } from 'react-bootstrap';
+import { Container, Button, Spinner, Alert, Form } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { getBigORequest, formBigORequest, deleteBigORequest, updateCompClassRequest } from '../../store/slices/bigorequestSlice';
+import { getBigORequest, formBigORequest, deleteBigORequest, updateCompClassRequest, deleteCompClassRequest } from '../../store/slices/bigorequestSlice';
 import Header from '../../components/Header/Header';
 import { ROUTES } from '../../Routes';
 import './BigORequestPage.css';
@@ -19,21 +19,15 @@ export default function BigORequestPage() {
 
     // Локальное состояние для размеров массивов
     const [arraySizes, setArraySizes] = useState<{ [key: number]: string }>({});
-
     const [imageErrors, setImageErrors] = useState<{ [key: number]: boolean }>({});
 
-    // Та же функция, что и в CompClassCard — делает путь абсолютным
+    // Новое состояние для выбора типа алгоритма и объёма данных
+    const [algorithmType, setAlgorithmType] = useState<string>('Сортировка');
+    const [dataVolume, setDataVolume] = useState<string>('1000');
+
     const getImageUrl = (photo: string | undefined): string => {
         if (!photo) return defaultComplexClassImage;
-
-        if (
-            photo.startsWith("data:") ||
-            photo.startsWith("/") ||
-            photo.includes("assets/")
-        ) {
-            return photo;
-        }
-
+        if (photo.startsWith("data:") || photo.startsWith("/") || photo.includes("assets/")) return photo;
         return `${getDestImg()}/${photo}`;
     };
 
@@ -43,7 +37,6 @@ export default function BigORequestPage() {
         }
     }, [dispatch, id]);
 
-    // Инициализация значений размеров массивов при загрузке items
     useEffect(() => {
         const initialSizes: { [key: number]: string } = {};
         items.forEach(item => {
@@ -55,24 +48,17 @@ export default function BigORequestPage() {
     }, [items]);
 
     const handleArraySizeChange = (compclassId: number, value: string) => {
-        setArraySizes(prev => ({
-            ...prev,
-            [compclassId]: value
-        }));
+        setArraySizes(prev => ({ ...prev, [compclassId]: value }));
     };
 
     const handleSaveArraySize = async (compclassId: number) => {
         if (!request?.bigo_request_id) return;
-
         const arraySize = arraySizes[compclassId] ? parseInt(arraySizes[compclassId]) : undefined;
-
         try {
             await dispatch(updateCompClassRequest({
                 compclassId,
                 bigoRequestId: request.bigo_request_id,
-                data: {
-                    array_size: arraySize
-                }
+                data: { array_size: arraySize }
             })).unwrap();
         } catch (error) {
             console.error('Ошибка при сохранении размера массива:', error);
@@ -89,6 +75,35 @@ export default function BigORequestPage() {
         if (!request?.bigo_request_id) return;
         await dispatch(deleteBigORequest(request.bigo_request_id));
         navigate(ROUTES.BigORequests);
+    };
+
+    const handleDeleteCompClass = async (compclassId: number) => {
+        if (!request?.bigo_request_id) return;
+        try {
+            await dispatch(deleteCompClassRequest({
+                compclassId,
+                bigoRequestId: request.bigo_request_id
+            })).unwrap();
+            await dispatch(getBigORequest(request.bigo_request_id));
+        } catch (e) {
+            console.error("Ошибка удаления класса:", e);
+        }
+    };
+
+    // Обработчик сохранения нового поля
+    const handleSaveAlgorithmConfig = async () => {
+        if (!request?.bigo_request_id) return;
+        const volume = parseInt(dataVolume);
+        if (isNaN(volume) || volume <= 0) {
+            alert("Пожалуйста, введите корректный объем данных!");
+            return;
+        }
+        // Здесь можно добавить логику отправки данных на сервер, например:
+        try {
+            alert("Настройки алгоритма сохранены!");
+        } catch (error) {
+            console.error('Ошибка при сохранении настроек:', error);
+        }
     };
 
     if (!isAuthenticated) {
@@ -142,6 +157,24 @@ export default function BigORequestPage() {
         <>
             <Header />
             <div className="bigo-request-page">
+                {/* Новое поле для выбора типа алгоритма и объёма данных */}
+                <div className="algorithm-config">
+                    <Form.Group className="mb-3">
+                        <Form.Label>Тип задачи</Form.Label>
+                        <Form.Select
+                            value={algorithmType}
+                            onChange={(e) => setAlgorithmType(e.target.value)}
+                        >
+                            <option value="Сортировка">Сортировка</option>
+                            <option value="Поиск максимального элемента">Поиск максимального элемента</option>
+                            <option value="Другое">Другое</option>
+                        </Form.Select>
+                    </Form.Group>
+                    <Button variant="success" onClick={handleSaveAlgorithmConfig}>
+                        Сохранить
+                    </Button>
+                </div>
+
                 {/* Заголовок таблицы */}
                 <div className="bigo-request-header">
                     <span className="bigo-request-text">Класс сложности</span>
@@ -150,55 +183,59 @@ export default function BigORequestPage() {
                 </div>
 
                 {/* Список классов сложности */}
-
-                    {items.length === 0 ? (
-                        <div className="text-center py-4">
-                            <p>В заявке пока нет классов сложности</p>
-                        </div>
-                    ) : (
-                        items.map((cc) => (
-                            <div key={cc.compclass_id} className="bigo-request-row">
-
-                                        {cc.img ? (
-                                            <img
-                                                src={
-                                                    imageErrors[cc.compclass_id!]
-                                                        ? defaultComplexClassImage
-                                                        : getImageUrl(cc.img)
-                                                }
-                                                alt={cc.complexity}
-                                                className="cell-img"
-                                                onError={() =>
-                                                    setImageErrors(prev => ({
-                                                        ...prev,
-                                                        [cc.compclass_id!]: true
-                                                    }))
-                                                }
-                                            />
-                                        ) : null}
-                                    <span className="bigo-request-text">O({cc.complexity})</span>
-
-                                <span className="bigo-request-text">{cc.degree_text}</span>
-                                <span>
-                                    {isDraft ? (
+                {items.length === 0 ? (
+                    <div className="text-center py-4">
+                        <p>В заявке пока нет классов сложности</p>
+                    </div>
+                ) : (
+                    items.map((cc) => (
+                        <div key={cc.compclass_id} className="bigo-request-row">
+                            {cc.img ? (
+                                <img
+                                    src={imageErrors[cc.compclass_id!] ? defaultComplexClassImage : getImageUrl(cc.img)}
+                                    alt={cc.complexity}
+                                    className="cell-img"
+                                    onError={() => setImageErrors(prev => ({ ...prev, [cc.compclass_id!]: true }))}
+                                />
+                            ) : null}
+                            <span className="bigo-request-text">O({cc.complexity})</span>
+                            <span className="bigo-request-text">{cc.degree_text}</span>
+                            <span>
+                                {isDraft ? (
+                                    <div className="array-size-control">
                                         <input
                                             type="text"
                                             className="input-field"
-                                            placeholder="Введите число...."
+                                            placeholder="Введите число..."
                                             value={arraySizes[cc.compclass_id!] || ''}
                                             onChange={(e) => handleArraySizeChange(cc.compclass_id!, e.target.value)}
-                                            onBlur={() => handleSaveArraySize(cc.compclass_id!)}
                                         />
-                                    ) : (
-                                        <span className="bigo-request-text">
-                                            {cc.array_size || 'Не указан'}
-                                        </span>
-                                    )}
-                                </span>
-                            </div>
-                        ))
-                    )}
-
+                                        <div className="array-size-buttons">
+                                            <Button
+                                                variant="success"
+                                                size="sm"
+                                                onClick={() => handleSaveArraySize(cc.compclass_id!)}
+                                            >
+                                                Сохранить
+                                            </Button>
+                                            <Button
+                                                variant="danger"
+                                                size="sm"
+                                                onClick={() => handleDeleteCompClass(cc.compclass_id!)}
+                                            >
+                                                Удалить
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <span className="bigo-request-text">
+                                        {cc.array_size || 'Не указан'}
+                                    </span>
+                                )}
+                            </span>
+                        </div>
+                    ))
+                )}
 
                 {/* Кнопки действий */}
                 <div className="result">

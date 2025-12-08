@@ -50,7 +50,7 @@ export default function Header() {
                                     Мои заявки
                                 </Link>
                                 <Link to={ROUTES.Profile} className="nav-link" onClick={closeMenu}>
-                                    {'Профиль'}
+                                    {username}
                                 </Link>
                                 <button
                                     className="nav-link logout-button"
@@ -81,7 +81,7 @@ export default function Header() {
                                     Мои заявки
                                 </Link>
                                 <Link to={ROUTES.Profile} className="nav-link" onClick={closeMenu}>
-                                    {'Профиль'}
+                                    {username}
                                 </Link>
                                 <button
                                     className="nav-link logout-button"
