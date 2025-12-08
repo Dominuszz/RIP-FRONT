@@ -5,24 +5,53 @@ import type { SerializerUserJSON } from '../../api/Api';
 interface UserState {
     username: string;
     isAuthenticated: boolean;
+    isModerator: boolean; // Добавляем поле для модератора
     error: string | null;
-    loading: boolean; // Добавляем свойство loading
+    loading: boolean;
 }
 
 const initialState: UserState = {
     username: '',
     isAuthenticated: false,
+    isModerator: false, // По умолчанию не модератор
     error: null,
-    loading: false, // Инициализируем loading
+    loading: false,
 };
+
+// Добавляем новый thunk для получения информации о пользователе
+export const getUserInfo = createAsyncThunk(
+    'user/getUserInfo',
+    async (login: string, { rejectWithValue }) => {
+        try {
+            const response = await api.users.infoList({ login });
+            return {
+                username: response.data.login,
+                isModerator: response.data.is_moderator || false,
+            };
+        } catch (error: unknown) {
+            if (error && typeof error === 'object' && 'response' in error) {
+                const apiError = error as { response?: { data?: { detail?: string } } };
+                return rejectWithValue(apiError.response?.data?.detail || 'Ошибка получения информации');
+            }
+            return rejectWithValue('Ошибка получения информации');
+        }
+    }
+);
 
 export const loginUser = createAsyncThunk(
     'user/loginUser',
-    async (credentials: { login: string; password: string }, { rejectWithValue }) => {
+    async (credentials: { login: string; password: string }, { rejectWithValue, dispatch }) => {
         try {
             const response = await api.users.signinCreate(credentials as SerializerUserJSON);
             localStorage.setItem('token', response.data.token);
-            return { username: credentials.login };
+            
+            // После успешного входа получаем информацию о пользователе
+            const userInfo = await dispatch(getUserInfo(credentials.login)).unwrap();
+            
+            return { 
+                username: credentials.login,
+                isModerator: userInfo.isModerator 
+            };
         } catch (error: unknown) {
             if (error && typeof error === 'object' && 'response' in error) {
                 const apiError = error as { response?: { data?: { detail?: string } } };
@@ -38,7 +67,10 @@ export const registerUser = createAsyncThunk(
     async (data: { login: string; password: string }, { rejectWithValue }) => {
         try {
             await api.users.signupCreate(data as SerializerUserJSON);
-            return { username: data.login };
+            return { 
+                username: data.login,
+                isModerator: false // Новые пользователи не модераторы по умолчанию
+            };
         } catch (error: unknown) {
             if (error && typeof error === 'object' && 'response' in error) {
                 const apiError = error as { response?: { data?: { detail?: string } } };
@@ -65,6 +97,7 @@ export const logoutUser = createAsyncThunk(
         }
     }
 );
+
 export const updateUserProfile = createAsyncThunk(
     'user/updateUserProfile',
     async (userData: { login: string; password?: string }, { rejectWithValue }) => {
@@ -95,7 +128,14 @@ export const updateUserProfile = createAsyncThunk(
 const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        // Добавляем редьюсер для обновления статуса модератора
+        updateModeratorStatus: (state, action) => {
+            state.isModerator = action.payload;
+        },
+        // Редьюсер для сброса состояния
+        resetUser: () => initialState,
+    },
     extraReducers: (builder) => {
         builder
             // Login
@@ -106,6 +146,7 @@ const userSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
                 state.username = action.payload.username;
+                state.isModerator = action.payload.isModerator;
                 state.isAuthenticated = true;
                 state.error = null;
             })
@@ -113,6 +154,7 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload as string;
                 state.isAuthenticated = false;
+                state.isModerator = false;
             })
             // Register
             .addCase(registerUser.pending, (state) => {
@@ -122,10 +164,24 @@ const userSlice = createSlice({
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.loading = false;
                 state.username = action.payload.username;
+                state.isModerator = action.payload.isModerator;
                 state.isAuthenticated = true;
                 state.error = null;
             })
             .addCase(registerUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            // Get User Info
+            .addCase(getUserInfo.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getUserInfo.fulfilled, (state, action) => {
+                state.loading = false;
+                state.isModerator = action.payload.isModerator;
+            })
+            .addCase(getUserInfo.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             })
@@ -137,22 +193,25 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.username = '';
                 state.isAuthenticated = false;
+                state.isModerator = false;
                 state.error = null;
             })
             .addCase(logoutUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             })
-            // В extraReducers добавьте:
+            // Update Profile
             .addCase(updateUserProfile.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
             .addCase(updateUserProfile.fulfilled, (state, action) => {
                 state.loading = false;
-                // Если в ответе есть новое имя пользователя, обновляем его
                 if (action.payload.login) {
                     state.username = action.payload.login;
+                }
+                if (action.payload.is_moderator !== undefined) {
+                    state.isModerator = action.payload.is_moderator;
                 }
                 state.error = null;
             })
@@ -160,8 +219,8 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload as string;
             });
-
     },
 });
 
+export const { updateModeratorStatus, resetUser } = userSlice.actions;
 export default userSlice.reducer;
