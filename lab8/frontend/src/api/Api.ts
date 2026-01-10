@@ -9,6 +9,17 @@
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
+// В api/Api.ts (сгенерированный файл) нужно добавить новую структуру
+// или модифицировать существующий метод
+
+export interface SerializerComplexClassListResponse {
+  items?: SerializerComplexClassJSON[];
+  total?: number;
+  page?: number;
+  limit?: number;
+  total_pages?: number;
+}
+
 
 export interface SerializerBigORequestJSON {
   bigo_request_id?: number;
@@ -99,8 +110,9 @@ export interface CompclassrequestDeleteParams {
 }
 
 export interface ComplexclassListParams {
-  /** Степень класса сложности для поиска */
   "search-degree"?: string;
+  page?: number;
+  limit?: number;
 }
 
 export interface ComplexclassDetailParams {

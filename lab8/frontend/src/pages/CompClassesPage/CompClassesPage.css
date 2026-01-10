@@ -81,3 +81,23 @@ body {
         font-size: 12px;
     }
 }
+.pagination-container {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+}
+.pagination .page-item .page-link {
+    background-color: #1c2526;
+    border-color: #2d3748;
+    color: #e2e8f0;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #148761;
+    border-color: #148761;
+    color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+    opacity: 0.45;
+}

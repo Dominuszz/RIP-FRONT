@@ -170,9 +170,6 @@ export default function BigORequestPage() {
                             <option value="Другое">Другое</option>
                         </Form.Select>
                     </Form.Group>
-                    <Button variant="success" onClick={handleSaveAlgorithmConfig}>
-                        Сохранить
-                    </Button>
                 </div>
 
                 {/* Заголовок таблицы */}

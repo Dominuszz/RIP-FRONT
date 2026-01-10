@@ -88,7 +88,7 @@ export default function ProfilePage() {
                                 <div className="profile-info mb-4">
                                     <h5>Информация о пользователе</h5>
                                     <p><strong>Логин:</strong> {username}</p>
-                                    <p><strong>Статус:</strong> Пользователь</p>
+                                    <p><strong>Статус:</strong> Разработчик</p>
                                 </div>
 
                                 <div className="password-change-section">
