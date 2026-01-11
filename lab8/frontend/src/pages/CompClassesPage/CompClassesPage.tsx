@@ -1,5 +1,4 @@
-// pages/CompClassesPage/CompClassesPage.tsx
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../../components/Header/Header';
 import InputField from '../../components/InputField/InputField';
 import './CompClassesPage.css';
@@ -11,7 +10,8 @@ import {
   setCurrentPage,
 } from '../../store/slices/complexClassesSlice';
 import CartButton from '../../components/CartButton/CartButton';
-import { Spinner, Alert, Pagination } from 'react-bootstrap';
+import { Spinner, Alert, Pagination, Button } from 'react-bootstrap';
+import LLMAssistant from '../../components/LLMAssistant/LLMAssistant'; // Добавлено
 
 export default function CompClassesPage() {
     const dispatch = useAppDispatch();
@@ -22,9 +22,10 @@ export default function CompClassesPage() {
         searchQuery,
         pagination,
     } = useAppSelector(state => state.complexClasses);
-
+    
+    const [showAssistant, setShowAssistant] = useState(false); // Добавлено
+    const { isAuthenticated } = useAppSelector((state) => state.user);
     useEffect(() => {
-        // Загружаем первую страницу при монтировании
         dispatch(getComplexClassesList({ page: 1 }));
     }, [dispatch]);
 
@@ -38,12 +39,11 @@ export default function CompClassesPage() {
         dispatch(getComplexClassesList({ page }));
     };
 
-    // Упрощённая пагинация (без лишних элементов)
+    // Пагинация (оставляем без изменений)
     const renderPaginationItems = () => {
         const items = [];
         const { currentPage, totalPages } = pagination;
 
-        // Первая
         if (totalPages > 1) {
             items.push(
                 <Pagination.Item 
@@ -56,12 +56,10 @@ export default function CompClassesPage() {
             );
         }
 
-        // Многоточие слева
         if (currentPage > 4) {
             items.push(<Pagination.Ellipsis key="start-ellipsis" />);
         }
 
-        // Страницы вокруг текущей
         for (
             let number = Math.max(2, currentPage - 2); 
             number <= Math.min(totalPages - 1, currentPage + 2); 
@@ -78,12 +76,10 @@ export default function CompClassesPage() {
             );
         }
 
-        // Многоточие справа
         if (currentPage < totalPages - 3) {
             items.push(<Pagination.Ellipsis key="end-ellipsis" />);
         }
 
-        // Последняя
         if (totalPages > 1 && currentPage !== totalPages) {
             items.push(
                 <Pagination.Item 
@@ -99,19 +95,39 @@ export default function CompClassesPage() {
         return items;
     };
 
+    // Подготовка данных для ассистента
+    const assistantServices = compclasses.map(cc => ({
+        name: `Класс сложности O(${cc.complexity || ''})`,
+        description: cc.description || '',
+        complexity: cc.complexity || ''
+    }));
+
     return (
         <div className="compclasses-page">
             <Header />
             <main className="main-content">
                 <div className="complexclass-wrapper">
-                    <div className="complexclass-search">
-                        <InputField
-                            value={searchQuery}
-                            onChange={(value) => dispatch(setSearchQuery(value))}
-                            onSearch={handleSearch}
-                            loading={loading}
-                            placeholder="Поиск по типу сложности (O(n), логарифмическая, экспоненциальная...)"
-                        />
+                    <div className="complexclass-search d-flex align-items-start gap-3">
+                        <div className="flex-grow-1">
+                            <InputField
+                                value={searchQuery}
+                                onChange={(value) => dispatch(setSearchQuery(value))}
+                                onSearch={handleSearch}
+                                loading={loading}
+                                placeholder="Поиск по типу сложности (O(n), логарифмическая, экспоненциальная...)"
+                            />
+                        </div>
+                            {!isAuthenticated && (
+
+                                <Button 
+                                onClick={() => setShowAssistant(true)}
+                                className="assistant-toggle-btn"
+                                title="Открыть AI ассистента по классам сложности"
+                                >
+                                <span className="me-2">🤖</span>
+                                AI Ассистент
+                                </Button>
+                            )}
                     </div>
 
                     {error && <Alert variant="danger" className="mt-4">{error}</Alert>}
@@ -166,6 +182,13 @@ export default function CompClassesPage() {
             </main>
 
             <CartButton />
+            
+        
+            <LLMAssistant
+                services={assistantServices}
+                show={showAssistant}
+                onHide={() => setShowAssistant(false)}
+            />
         </div>
     );
-}   
+}

@@ -101,3 +101,35 @@ body {
 .pagination .page-item.disabled .page-link {
     opacity: 0.45;
 }
+
+.assistant-toggle-btn {
+  background-color: #148761;
+  border-color: #148761;
+  color: white;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.assistant-toggle-btn:hover,
+.assistant-toggle-btn:focus,
+.assistant-toggle-btn:active {
+  background-color: #1a9c75;
+  border-color: #1a9c75;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(20, 135, 97, 0.35);
+}
+
+.assistant-toggle-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Эмодзи чуть крупнее и с лёгким подъёмом */
+.assistant-toggle-btn span {
+  font-size: 1.3em;
+  position: relative;
+  top: -1px;
+}
